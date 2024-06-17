@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aplikacja do generowania certyfikatów</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Formularz zapisania się na kurs</h1>
+    </header>
+    <div id="form-section">
+      <div class="form-group">
+        <label for="name">Imię i nazwisko:</label>
+        <input type="text" id="name" required />
+      </div>
+      <button onclick="register()">Zapisz się</button>
+    </div>
+    <div class="admin-panel">
+      <h2>Panel administratora</h2>
+      <button onclick="generateCertificates()">Generuj certyfikaty</button>
+      <div id="certificates"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
