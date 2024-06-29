@@ -1,36 +1,51 @@
-let students = [];
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+  const registrationForm = document.getElementById("registrationForm");
+  const userList = document.getElementById("userList");
+  const certificateContainer = document.getElementById("certificateContainer");
+  const certName = document.getElementById("certName");
+  const downloadCertificate = document.getElementById("downloadCertificate");
 
-window.register = function register() {
-  const name = document.getElementById("name").value;
-  if (name) {
-    students.push({ name: name });
-    alert("Zapisano na kurs: " + name);
-    document.getElementById("name").value = "";
-  } else {
-    alert("Proszę wprowadzić imię i nazwisko.");
-  }
-};
+  let users = [];
 
-window.generateCertificates = function generateCertificates() {
-  const { jsPDF } = window.jspdf;
-  const certificatesDiv = document.getElementById("certificates");
-  certificatesDiv.innerHTML = "";
-
-  students.forEach((student) => {
-    const doc = new jsPDF();
-    doc.setFontSize(20);
-    doc.text("Certyfikat Ukonczenia", 20, 30);
-    doc.setFontSize(12);
-    doc.text(`To certyfikuje, ze ${student.name}`, 20, 50);
-    doc.text("ukonczyl(a) kurs Programowanie w JavaScript.", 20, 60);
-    doc.text("Data: " + new Date().toLocaleDateString(), 20, 70);
-
-    const pdfData = doc.output("datauristring");
-    const link = document.createElement("a");
-    link.href = pdfData;
-    link.download = `Certyfikat_${student.name}.pdf`;
-    link.textContent = `Pobierz certyfikat dla ${student.name}`;
-    certificatesDiv.appendChild(link);
-    certificatesDiv.appendChild(document.createElement("br"));
+  registrationForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    if (name) {
+      users.push(name);
+      updateUserList();
+      registrationForm.reset();
+    }
   });
-};
+
+  userList.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+      const name = e.target.textContent;
+      generateCertificate(name);
+    }
+  });
+
+  downloadCertificate.addEventListener("click", () => {
+    const certificate = document.getElementById("certificate");
+    html2canvas(certificate).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "certificate.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  });
+
+  function updateUserList() {
+    userList.innerHTML = "";
+    users.forEach((user) => {
+      const li = document.createElement("li");
+      li.textContent = user;
+      userList.appendChild(li);
+    });
+  }
+
+  function generateCertificate(name) {
+    certName.textContent = name;
+    certificateContainer.style.display = "block";
+  }
+});
